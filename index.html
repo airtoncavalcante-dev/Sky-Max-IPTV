@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sky Max IPTV</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="site-wrapper">
+    <h1 class="title">Sky Max IPTV</h1>
+    <p class="subtitle">Os melhores canais de TV em um só lugar.</p>
+
+    <div id="playerArea"></div>
+
+    <div id="channels">
+      <!-- Sportv -->
+      <div class="channel" onclick="showPlayer('sportv')">
+        <div class="channel-name">Sportv</div>
+        <img src="img/sportv33.jpg" alt="Sportv">
+      </div>
+
+      <!-- Premiere -->
+      <div class="channel" onclick="showPlayer('premiere')">
+        <div class="channel-name">Premiere</div>
+        <img src="img/premiere.png" alt="Premiere">
+      </div>
+
+      <!-- Globo -->
+      <div class="channel" onclick="showPlayer('globo')">
+        <div class="channel-name">Globo</div>
+        <img src="img/globo.png" alt="Globo">
+      </div>
+
+      <!-- SBT -->
+      <div class="channel" onclick="showPlayer('sbt')">
+        <div class="channel-name">SBT</div>
+        <img src="img/sbt.png" alt="SBT">
+      </div>
+
+      <!-- Record -->
+      <div class="channel" onclick="showPlayer('record')">
+        <div class="channel-name">Record</div>
+        <img src="img/record.jpg" alt="Record">
+      </div>
+
+      <!-- Space -->
+      <div class="channel" onclick="showPlayer('space')">
+        <div class="channel-name">Space</div>
+        <img src="img/space.jpg" alt="Space">
+      </div>
+
+      <!-- Warner Channel -->
+      <div class="channel" onclick="showPlayer('warner')">
+        <div class="channel-name">Warner Channel</div>
+        <img src="img/warner.png" alt="Warner Channel">
+      </div>
+
+      <!-- Playboy TV -->
+      <div class="channel" onclick="showPlayer('playboy')">
+        <div class="channel-name">Playboy TV</div>
+        <img src="img/playboy.png" alt="Playboy TV">
+      </div>
+
+      <!-- Sexy Hot TV -->
+      <div class="channel" onclick="showPlayer('sexyhot')">
+        <div class="channel-name">Sexy Hot TV</div>
+        <img src="img/sexyhot.jpg" alt="Sexy Hot TV">
+      </div>
+    </div>
+
+    <footer class="footer">Copyright - Cavalcante Tecnology</footer>
+  </div>
+
+  <script>
+    function showPlayer(channel) {
+      let src = "";
+
+      if (channel === 'sportv') src = 'https://alerquina54102.embedtv.lat/sportv';
+      else if (channel === 'premiere') src = 'https://alerquina54102.embedtv.lat/premiere';
+      else if (channel === 'globo') src = 'https://alerquina54102.embedtv.lat/globo';
+      else if (channel === 'sbt') src = 'https://alerquina54102.embedtv.lat/sbt';
+      else if (channel === 'record') src = 'https://redecanaistv.golf/player3/ch.php?categoria=live&canal=record';
+      else if (channel === 'space') src = 'https://alerquina54102.embedtv.lat/space';
+      else if (channel === 'warner') src = 'https://alerquina54102.embedtv.lat/warnerchannel';
+      else if (channel === 'playboy') src = 'https://v4.rde.lat/playboytv';
+      else if (channel === 'sexyhot') src = 'https://alerquina54102.embedtv.lat/sexyhot';
+
+      document.getElementById("playerArea").innerHTML =
+        `<iframe src="${src}" allowfullscreen frameborder="0" style="width:100%;height:500px;"></iframe>`;
+    }
+  </script>
+</body>
+</html>
