@@ -2,8 +2,11 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Sky Max IPTV</title>
+  <!-- ÍCONE DO SITE -->
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/airtoncavalcante-dev/Sky-Max-IPTV/main/img/icone-iptv.png">
+  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/airtoncavalcante-dev/Sky-Max-IPTV/main/img/icone-iptv.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,35 +16,32 @@
       <p class="subtitle">Os melhores canais de TV em um só lugar.</p>
     </header>
 
-    <!-- Botão / Ícone do controle -->
-    <div id="drawerTrigger" title="Abrir lista de canais">
-      <img src="https://raw.githubusercontent.com/airtoncavalcante-dev/Sky-Max-IPTV/main/img/Controle-sem-fundo.png" alt="Controle">
+    <!-- Botão Controle -->
+    <div id="drawerTrigger" title="Abrir canais">
+      <img src="https://raw.githubusercontent.com/airtoncavalcante-dev/Sky-Max-IPTV/main/img/Controle-sem-fundo.png" alt="Controle" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <span style="display:none; font-size:32px;">🎮</span>
       <span class="pulse"></span>
     </div>
 
-    <!-- Gaveta de canais -->
+    <!-- Gaveta -->
     <aside id="channelDrawer">
       <div class="drawer-header">
-        <span>CANAIS</span>
+        <span>CANAIS DE VOLTA</span>
         <button id="closeDrawer">✕</button>
       </div>
-      <div class="drawer-list" id="channelList">
-        <!-- Canais serão injetados via JS para manter ordem/número -->
-      </div>
-      <div class="drawer-footer">Selecione um canal</div>
+      <div class="drawer-list" id="channelList"></div>
+      <div class="drawer-footer">Toque para assistir • Fecha em 5s</div>
     </aside>
 
-    <!-- Overlay escuro quando drawer aberto -->
     <div id="overlay"></div>
 
-    <!-- Player -->
     <main id="mainPlayer">
       <div id="playerArea">
         <div id="playerPlaceholder">
-          <span>Selecione um canal na lista ao lado</span>
+          <span>Selecione um canal</span>
           <small>Toque no controle à esquerda</small>
         </div>
-        <iframe id="playerFrame" src="" allowfullscreen frameborder="0"></iframe>
+        <iframe id="playerFrame" name="Player" src="" frameborder="0" height="400" width="640" scrolling="no" allow="encrypted-media" allowfullscreen></iframe>
       </div>
       <div id="nowPlaying">Nenhum canal selecionado</div>
     </main>
@@ -54,7 +54,7 @@
 <script>
 const channels = [
   { num: 4,   name: 'SBT',             id: 'sbt',      src: 'https://alerquina54102.embedtv.lat/sbt' },
-  { num: 5,   name: 'GLOBO',           id: 'globo',    src: 'https://alerquina54102.embedtv.lat/globo' },
+  { num: 5,   name: 'GLOBO',           id: 'globo',    src: 'https://redecanaistv.af/player3/ch.php?canal=bobonordeste' },
   { num: 7,   name: 'RECORD',          id: 'record',   src: 'https://redecanaistv.golf/player3/ch.php?categoria=live&canal=record' },
   { num: 36,  name: 'SporTV',          id: 'sportv',   src: 'https://alerquina54102.embedtv.lat/sportv' },
   { num: 110, name: 'Space',           id: 'space',    src: 'https://alerquina54102.embedtv.lat/space' },
@@ -74,16 +74,15 @@ const placeholder = document.getElementById('playerPlaceholder');
 const nowPlaying = document.getElementById('nowPlaying');
 
 let autoCloseTimer = null;
-let activeId = null;
 
 function renderList(){
   listEl.innerHTML = channels.map(ch => `
-    <div class="channel-row" data-id="${ch.id}" data-src="${ch.src}" data-name="${ch.name}" data-num="${ch.num}">
+    <div class="channel-row" data-id="${ch.id}">
       <span class="ch-num">${ch.num}</span>
       <span class="ch-name">${ch.name}</span>
     </div>
   `).join('');
-  document.querySelectorAll('.channel-row').forEach(row => {
+  listEl.querySelectorAll('.channel-row').forEach(row => {
     row.addEventListener('click', () => selectChannel(row.dataset.id));
   });
 }
@@ -98,49 +97,43 @@ function closeDrawer(){
   overlay.classList.remove('show');
   clearTimeout(autoCloseTimer);
 }
-
 function resetAutoClose(){
   clearTimeout(autoCloseTimer);
-  autoCloseTimer = setTimeout(() => {
-    closeDrawer();
-  }, 10000); // 10 segundos
+  autoCloseTimer = setTimeout(closeDrawer, 5000); // 5 SEGUNDOS
 }
 
 function selectChannel(id){
   const ch = channels.find(c => c.id === id);
   if(!ch) return;
-  activeId = id;
-  
-  // atualiza UI lista
-  document.querySelectorAll('.channel-row').forEach(r => r.classList.remove('active'));
-  document.querySelector(`[data-id="${id}"]`).classList.add('active');
+  listEl.querySelectorAll('.channel-row').forEach(r => r.classList.remove('active'));
+  listEl.querySelector(`[data-id="${id}"]`).classList.add('active');
 
-  // player
   placeholder.style.display = 'none';
   frame.style.display = 'block';
   frame.src = ch.src;
   nowPlaying.textContent = `${ch.num} - ${ch.name} - AO VIVO`;
   nowPlaying.classList.add('live');
 
-  // fecha depois de 2s
-  setTimeout(closeDrawer, 2000);
+  setTimeout(closeDrawer, 1500);
 }
 
-// Eventos
-trigger.addEventListener('mouseenter', openDrawer);
-trigger.addEventListener('click', openDrawer);
+trigger.addEventListener('click', (e) => {
+  e.stopPropagation();
+  if(drawer.classList.contains('open')) closeDrawer();
+  else openDrawer();
+});
 closeBtn.addEventListener('click', closeDrawer);
 overlay.addEventListener('click', closeDrawer);
-drawer.addEventListener('mousemove', resetAutoClose);
-drawer.addEventListener('click', resetAutoClose);
-drawer.addEventListener('touchstart', resetAutoClose);
 
-// Inicializa
+// Reseta timer ao interagir
+drawer.addEventListener('mousemove', resetAutoClose);
+drawer.addEventListener('touchstart', resetAutoClose, {passive:true});
+drawer.addEventListener('scroll', resetAutoClose, {passive:true});
+
 renderList();
-// Deixa drawer aberto 3s ao carregar para o usuário ver
 window.addEventListener('load', () => {
   openDrawer();
-  setTimeout(closeDrawer, 3000);
+  setTimeout(closeDrawer, 4000);
 });
 </script>
 </body>
