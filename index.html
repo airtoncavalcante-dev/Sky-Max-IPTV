@@ -8,90 +8,140 @@
 </head>
 <body>
   <div id="site-wrapper">
-    <h1 class="title">Sky Max IPTV</h1>
-    <p class="subtitle">Os melhores canais de TV em um só lugar.</p>
+    <header class="header">
+      <h1 class="title">Sky Max IPTV</h1>
+      <p class="subtitle">Os melhores canais de TV em um só lugar.</p>
+    </header>
 
-    <div id="playerArea"></div>
-
-    <div id="channels">
-      <!-- Sportv -->
-      <div class="channel" onclick="showPlayer('sportv')">
-        <div class="channel-name">Sportv</div>
-        <img src="img/sportv33.jpg" alt="Sportv">
-      </div>
-
-      <!-- Premiere -->
-      <div class="channel" onclick="showPlayer('premiere')">
-        <div class="channel-name">Premiere</div>
-        <img src="img/premiere.png" alt="Premiere">
-      </div>
-
-      <!-- Globo -->
-      <div class="channel" onclick="showPlayer('globo')">
-        <div class="channel-name">Globo</div>
-        <img src="img/globo.png" alt="Globo">
-      </div>
-
-      <!-- SBT -->
-      <div class="channel" onclick="showPlayer('sbt')">
-        <div class="channel-name">SBT</div>
-        <img src="img/sbt.png" alt="SBT">
-      </div>
-
-      <!-- Record -->
-      <div class="channel" onclick="showPlayer('record')">
-        <div class="channel-name">Record</div>
-        <img src="img/record.jpg" alt="Record">
-      </div>
-
-      <!-- Space -->
-      <div class="channel" onclick="showPlayer('space')">
-        <div class="channel-name">Space</div>
-        <img src="img/space.jpg" alt="Space">
-      </div>
-
-      <!-- Warner Channel -->
-      <div class="channel" onclick="showPlayer('warner')">
-        <div class="channel-name">Warner Channel</div>
-        <img src="img/warner.png" alt="Warner Channel">
-      </div>
-
-      <!-- Playboy TV -->
-      <div class="channel" onclick="showPlayer('playboy')">
-        <div class="channel-name">Playboy TV</div>
-        <img src="img/playboy.png" alt="Playboy TV">
-      </div>
-
-      <!-- Sexy Hot TV -->
-      <div class="channel" onclick="showPlayer('sexyhot')">
-        <div class="channel-name">Sexy Hot TV</div>
-        <img src="img/sexyhot.jpg" alt="Sexy Hot TV">
-      </div>
+    <!-- Botão / Ícone do controle -->
+    <div id="drawerTrigger" title="Abrir lista de canais">
+      <img src="https://raw.githubusercontent.com/airtoncavalcante-dev/Sky-Max-IPTV/main/img/Controle-sem-fundo.png" alt="Controle">
+      <span class="pulse"></span>
     </div>
 
-    <footer>
-             <p>&copy; Desenvolvido por Cavalcante Tecnology - 2026
+    <!-- Gaveta de canais -->
+    <aside id="channelDrawer">
+      <div class="drawer-header">
+        <span>CANAIS</span>
+        <button id="closeDrawer">✕</button>
+      </div>
+      <div class="drawer-list" id="channelList">
+        <!-- Canais serão injetados via JS para manter ordem/número -->
+      </div>
+      <div class="drawer-footer">Selecione um canal</div>
+    </aside>
+
+    <!-- Overlay escuro quando drawer aberto -->
+    <div id="overlay"></div>
+
+    <!-- Player -->
+    <main id="mainPlayer">
+      <div id="playerArea">
+        <div id="playerPlaceholder">
+          <span>Selecione um canal na lista ao lado</span>
+          <small>Toque no controle à esquerda</small>
+        </div>
+        <iframe id="playerFrame" src="" allowfullscreen frameborder="0"></iframe>
+      </div>
+      <div id="nowPlaying">Nenhum canal selecionado</div>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; Desenvolvido por Cavalcante Tecnology - 2026</p>
     </footer>
-    
   </div>
 
-  <script>
-    function showPlayer(channel) {
-      let src = "";
+<script>
+const channels = [
+  { num: 4,   name: 'SBT',             id: 'sbt',      src: 'https://alerquina54102.embedtv.lat/sbt' },
+  { num: 5,   name: 'GLOBO',           id: 'globo',    src: 'https://alerquina54102.embedtv.lat/globo' },
+  { num: 7,   name: 'RECORD',          id: 'record',   src: 'https://redecanaistv.golf/player3/ch.php?categoria=live&canal=record' },
+  { num: 36,  name: 'SporTV',          id: 'sportv',   src: 'https://alerquina54102.embedtv.lat/sportv' },
+  { num: 110, name: 'Space',           id: 'space',    src: 'https://alerquina54102.embedtv.lat/space' },
+  { num: 139, name: 'Warner Channel',  id: 'warner',   src: 'https://alerquina54102.embedtv.lat/warnerchannel' },
+  { num: 230, name: 'Premiere',        id: 'premiere', src: 'https://alerquina54102.embedtv.lat/premiere' },
+  { num: 270, name: 'Sexy Hot',        id: 'sexyhot',  src: 'https://alerquina54102.embedtv.lat/sexyhot' },
+  { num: 272, name: 'Playboy TV',      id: 'playboy',  src: 'https://v4.rde.lat/playboytv' },
+];
 
-      if (channel === 'sportv') src = 'https://alerquina54102.embedtv.lat/sportv';
-      else if (channel === 'premiere') src = 'https://alerquina54102.embedtv.lat/premiere';
-      else if (channel === 'globo') src = 'https://alerquina54102.embedtv.lat/globo';
-      else if (channel === 'sbt') src = 'https://alerquina54102.embedtv.lat/sbt';
-      else if (channel === 'record') src = 'https://redecanaistv.golf/player3/ch.php?categoria=live&canal=record';
-      else if (channel === 'space') src = 'https://alerquina54102.embedtv.lat/space';
-      else if (channel === 'warner') src = 'https://alerquina54102.embedtv.lat/warnerchannel';
-      else if (channel === 'playboy') src = 'https://v4.rde.lat/playboytv';
-      else if (channel === 'sexyhot') src = 'https://alerquina54102.embedtv.lat/sexyhot';
+const drawer = document.getElementById('channelDrawer');
+const trigger = document.getElementById('drawerTrigger');
+const overlay = document.getElementById('overlay');
+const closeBtn = document.getElementById('closeDrawer');
+const listEl = document.getElementById('channelList');
+const frame = document.getElementById('playerFrame');
+const placeholder = document.getElementById('playerPlaceholder');
+const nowPlaying = document.getElementById('nowPlaying');
 
-      document.getElementById("playerArea").innerHTML =
-        `<iframe src="${src}" allowfullscreen frameborder="0" style="width:100%;height:500px;"></iframe>`;
-    }
-  </script>
+let autoCloseTimer = null;
+let activeId = null;
+
+function renderList(){
+  listEl.innerHTML = channels.map(ch => `
+    <div class="channel-row" data-id="${ch.id}" data-src="${ch.src}" data-name="${ch.name}" data-num="${ch.num}">
+      <span class="ch-num">${ch.num}</span>
+      <span class="ch-name">${ch.name}</span>
+    </div>
+  `).join('');
+  document.querySelectorAll('.channel-row').forEach(row => {
+    row.addEventListener('click', () => selectChannel(row.dataset.id));
+  });
+}
+
+function openDrawer(){
+  drawer.classList.add('open');
+  overlay.classList.add('show');
+  resetAutoClose();
+}
+function closeDrawer(){
+  drawer.classList.remove('open');
+  overlay.classList.remove('show');
+  clearTimeout(autoCloseTimer);
+}
+
+function resetAutoClose(){
+  clearTimeout(autoCloseTimer);
+  autoCloseTimer = setTimeout(() => {
+    closeDrawer();
+  }, 10000); // 10 segundos
+}
+
+function selectChannel(id){
+  const ch = channels.find(c => c.id === id);
+  if(!ch) return;
+  activeId = id;
+  
+  // atualiza UI lista
+  document.querySelectorAll('.channel-row').forEach(r => r.classList.remove('active'));
+  document.querySelector(`[data-id="${id}"]`).classList.add('active');
+
+  // player
+  placeholder.style.display = 'none';
+  frame.style.display = 'block';
+  frame.src = ch.src;
+  nowPlaying.textContent = `${ch.num} - ${ch.name} - AO VIVO`;
+  nowPlaying.classList.add('live');
+
+  // fecha depois de 2s
+  setTimeout(closeDrawer, 2000);
+}
+
+// Eventos
+trigger.addEventListener('mouseenter', openDrawer);
+trigger.addEventListener('click', openDrawer);
+closeBtn.addEventListener('click', closeDrawer);
+overlay.addEventListener('click', closeDrawer);
+drawer.addEventListener('mousemove', resetAutoClose);
+drawer.addEventListener('click', resetAutoClose);
+drawer.addEventListener('touchstart', resetAutoClose);
+
+// Inicializa
+renderList();
+// Deixa drawer aberto 3s ao carregar para o usuário ver
+window.addEventListener('load', () => {
+  openDrawer();
+  setTimeout(closeDrawer, 3000);
+});
+</script>
 </body>
 </html>
