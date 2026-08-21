@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Sky Max IPTV</title>
-  <!-- ÍCONE DO SITE -->
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/airtoncavalcante-dev/Sky-Max-IPTV/main/img/icone-iptv2.png">
   <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/airtoncavalcante-dev/Sky-Max-IPTV/main/img/icone-iptv2.png">
   <link rel="stylesheet" href="style.css">
@@ -16,11 +15,13 @@
       <p class="subtitle">Os melhores canais de TV em um só lugar.</p>
     </header>
 
-    <!-- Botão Controle -->
+    <!-- Botão Controle - ALTERADO -->
     <div id="drawerTrigger" title="Abrir canais">
-      <img src="https://raw.githubusercontent.com/airtoncavalcante-dev/Sky-Max-IPTV/main/img/Controle-sem-fundo.png" alt="Controle" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-      <span style="display:none; font-size:32px;">🎮</span>
-      <span class="pulse"></span>
+      <span class="controle-label">CONTROLE</span>
+      <div class="controle-img-wrap">
+        <img src="https://raw.githubusercontent.com/airtoncavalcante-dev/Sky-Max-IPTV/main/img/Controle-sem-fundo.png" alt="Controle">
+        <span class="pulse"></span>
+      </div>
     </div>
 
     <!-- Gaveta -->
@@ -62,11 +63,8 @@ const channels = [
   { num: 230, name: 'Premiere',        id: 'premiere', src: 'https://alerquina54102.embedtv.lat/premiere' },
   { num: 270, name: 'Sexy Hot',        id: 'sexyhot',  src: 'https://alerquina54102.embedtv.lat/sexyhot' },
   { num: 272, name: 'Playboy TV',      id: 'playboy',  src: 'https://v4.rde.lat/playboytv' },
-
-  { num: 574, name: 'Play TV',         id: 'playtv',  src: 'https://v2.cloudecast.com/playtvwebb/embed.html' },
-
-   { num: 577,   name: 'CNN Brasil',   id: 'cnn',   src: 'https://redecanaistv.golf/player3/ch.php?categoria=live&canal=cnnbrasil' },
-  
+  { num: 574, name: 'Play TV',         id: 'playtv',   src: 'https://v2.cloudecast.com/playtvwebb/embed.html' },
+  { num: 577, name: 'CNN Brasil',      id: 'cnn',      src: 'https://redecanaistv.golf/player3/ch.php?categoria=live&canal=cnnbrasil' },
 ];
 
 const drawer = document.getElementById('channelDrawer');
@@ -104,7 +102,7 @@ function closeDrawer(){
 }
 function resetAutoClose(){
   clearTimeout(autoCloseTimer);
-  autoCloseTimer = setTimeout(closeDrawer, 5000); // 5 SEGUNDOS
+  autoCloseTimer = setTimeout(closeDrawer, 5000);
 }
 
 function selectChannel(id){
@@ -112,13 +110,11 @@ function selectChannel(id){
   if(!ch) return;
   listEl.querySelectorAll('.channel-row').forEach(r => r.classList.remove('active'));
   listEl.querySelector(`[data-id="${id}"]`).classList.add('active');
-
   placeholder.style.display = 'none';
   frame.style.display = 'block';
   frame.src = ch.src;
   nowPlaying.textContent = `${ch.num} - ${ch.name} - AO VIVO`;
   nowPlaying.classList.add('live');
-
   setTimeout(closeDrawer, 1500);
 }
 
@@ -129,8 +125,6 @@ trigger.addEventListener('click', (e) => {
 });
 closeBtn.addEventListener('click', closeDrawer);
 overlay.addEventListener('click', closeDrawer);
-
-// Reseta timer ao interagir
 drawer.addEventListener('mousemove', resetAutoClose);
 drawer.addEventListener('touchstart', resetAutoClose, {passive:true});
 drawer.addEventListener('scroll', resetAutoClose, {passive:true});
